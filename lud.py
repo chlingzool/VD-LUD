@@ -1,4 +1,5 @@
 import pickle
+from datetime import datetime
 
 class main:
     def __init__(self, name='LinyNew1-l4', mode=None, **kwargs):
@@ -19,6 +20,7 @@ class main:
         #运行
         if kwargs not in [{}, None]:
             self.dev = self.Dev(open=True, **kwargs)
+            self.tool.elf = self.dev.ErrorLogInFile
         else:
             self.dev = self.Dev(open=False)
         #检查
@@ -67,8 +69,8 @@ class main:
             r = '\033[91m'; y = '\033[93m'; s = '\033[0m'
             print(f"{r}{error}{s}[{y}{num}{s}]: {value}")
             if self.elf is True:
-                with open('error.log', 'a') as f:
-                    f.write(f"{error}[{num}]: {value}\n")
+                with open('runing.log', 'a', encoding='utf-8') as f:
+                    f.write(f"({datetime.now().strftime('%Y-%m-%d %H:%M:%S')})\t{error}[{num}]: {value}\n")
             return num
 
         def to_bytes(self, value: str) -> bytes:
