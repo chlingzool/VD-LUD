@@ -665,11 +665,10 @@ class main:
         else:
             self.tool.Error('InputError', 3, '输入有误'); return 3
 
-vd = main(mode=None, oof=True, elf=True) #None表示格式化，True表示加载
-vd.labelf() #显示label
-vd.watch('dev') #显示设备dev状态
-
 if __name__ == '__main__':
+    vd = main(mode=None, oof=True, elf=True) #None表示格式化，True表示加载
+    vd.labelf() #显示label
+    vd.watch('dev') #显示设备dev状态
     while True:
         cmd = input("\033[93m" + 'VD> ' + "\033[0m")
         if cmd in ['exit', 'quit', 'q']: break
