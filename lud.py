@@ -2,10 +2,10 @@ import pickle
 from datetime import datetime
 
 class main:
-    def __init__(self, name='LinyNew1-l4', mode=None, **kwargs):
+    def __init__(self, name='l5', path='.', mode=None, **kwargs):
         #主要信息
         self.name = name
-        self.label = ('VD/LUD', name, '1-l4|1.1.4x')
+        self.label = ('VD/LUD', name, 'l5')
         self.clusters = [f'C{c:02d}t{t:03d}' for c in range(11) for t in range(256)]
         self.main = {f"C{c:02d}t{t:03d}": None for c in range(11) for t in range(256)}
         self.index = {0: self.label}
@@ -24,8 +24,8 @@ class main:
         else:
             self.dev = self.Dev(open=False)
         #检查
-        if mode == 'load' or mode is True: self._check()
-        elif mode == 'new' or mode is None: self._format()
+        if mode == 'load' or mode is True: self._check(path)
+        elif mode == 'new' or mode is None: self._format(path)
 
     #类
 
@@ -69,7 +69,7 @@ class main:
             r = '\033[91m'; y = '\033[93m'; s = '\033[0m'
             print(f"{r}{error}{s}[{y}{num}{s}]: {value}")
             if self.elf is True:
-                with open('runing.log', 'a', encoding='utf-8') as f:
+                with open('runing.log', 'a') as f:
                     f.write(f"({datetime.now().strftime('%Y-%m-%d %H:%M:%S')})\t{error}[{num}]: {value}\n")
             return num
 
@@ -174,36 +174,36 @@ class main:
 
     #深层方法
 
-    def _check(self):
+    def _check(self, path='.'):
         if self.dev.OnlyOneFile:
-            with open(f'{self.name}.lud', 'rb') as f:
+            with open(f'{path}/{self.name}.lud', 'rb') as f:
                 self = pickle.load(f)
         else:
-            with open('clusters.ovd', 'rb') as c, open('index.ovd', 'rb') as i, open('partinfo.ovd', 'rb') as p:
+            with open(f'{path}/clusters.ovd', 'rb') as c, open(f'{path}/index.ovd', 'rb') as i, open(f'{path}/partinfo.ovd', 'rb') as p:
                 self.main = eval(self.tool.re_text(c.read()))
                 self.index = eval(self.tool.re_text(i.read()))
                 self.part = pickle.load(p)
         print('self-check over')
         return 0
 
-    def _format(self):
+    def _format(self, path='.'):
         if self.dev.OnlyOneFile:
-            with open(f'{self.name}.lud', 'wb') as f:
+            with open(f'{path}/{self.name}.lud', 'wb') as f:
                 pickle.dump(self, f)
         else:
-            with open('clusters.ovd', 'wb') as c, open('index.ovd', 'wb') as i, open('partinfo.ovd', 'wb') as p:
+            with open(f'{path}/clusters.ovd', 'wb') as c, open(f'{path}/index.ovd', 'wb') as i, open(f'{path}/partinfo.ovd', 'wb') as p:
                 c.write(self.tool.to_bytes(self.main))
                 i.write(self.tool.to_bytes(self.index))
                 pickle.dump(self, p)
         print('format VD. ok')
         return 0
     
-    def save(self):
+    def save(self, path='.'):
         if self.dev.OnlyOneFile:
-            with open(f'{self.name}.lud', 'wb') as f:
+            with open(f'{path}/{self.name}.lud', 'wb') as f:
                 pickle.dump(self, f)
         else:
-            with open('clusters.ovd', 'wb') as c, open('index.ovd', 'wb') as i, open('partinfo.ovd', 'wb') as p:
+            with open(f'{path}/clusters.ovd', 'wb') as c, open(f'{path}/index.ovd', 'wb') as i, open(f'{path}/partinfo.ovd', 'wb') as p:
                 c.write(self.tool.to_bytes(self.main))
                 i.write(self.tool.to_bytes(self.index))
                 pickle.dump(self, p)
@@ -668,7 +668,7 @@ class main:
             self.tool.Error('InputError', 3, '输入有误'); return 3
 
 if __name__ == '__main__':
-    vd = main(mode=None, oof=True, elf=True) #None表示格式化，True表示加载
+    vd = main(path='lud/', mode=None, oof=True, elf=True) #None表示格式化，True表示加载
     vd.labelf() #显示label
     vd.watch('dev') #显示设备dev状态
     while True:
