@@ -113,5 +113,3 @@ save / stroage - 存储文件读写
 - 参数
 dev.open - DEV状态
 ```
-
-
