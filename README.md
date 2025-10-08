@@ -27,6 +27,10 @@ LUD驱动程序的运行环境要求：
 * 环境：Python3.13.1+ （3.11理论上可以运行）
 * 需要的module：pickle, datetime
 
+推荐环境：
+* 操作系统：Windows
+* 环境：Python3.14.0
+
 #### 接口
 
 接口：(已经实现的访问接口)
@@ -109,4 +113,5 @@ save / stroage - 存储文件读写
 - 参数
 dev.open - DEV状态
 ```
+
 
